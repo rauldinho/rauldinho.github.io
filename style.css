@@ -1,31 +1,36 @@
 /* ============================================================
    rauldinho · Portfolio — style.css
-   Theme: Ahoy — Technical Documentary
-   Palette: Deep Teal · Cyan · Amber · Cream
+   Theme: Ahoy Light — Paper & Blueprint
+   Palette: Eggshell · Petrol · Flame · Drafting Grey
    ============================================================ */
 
 /* ---------- CSS Custom Properties ---------- */
 :root {
-  /* Colours */
-  --bg-deep:       #031e26;
-  --bg-base:       #052e38;
-  --bg-panel:      #07404f;
-  --bg-card:       #095766;
-  --bg-card-hover: #0b6677;
-  --bg-input:      #042430;
+  /* Backgrounds */
+  --bg-deep:       #EDE9E0;   /* slightly darker page bg */
+  --bg-base:       #F4F1EA;   /* bone / eggshell — primary bg */
+  --bg-panel:      #EDEADE;   /* putty — sidebar, panels */
+  --bg-card:       #E8E4D9;   /* putty — cards */
+  --bg-card-hover: #E0DBD0;   /* card hover */
+  --bg-input:      #EDEADE;   /* form inputs */
 
-  --c-cyan:        #11c0ca;
-  --c-cyan-dim:    rgba(17, 192, 202, 0.18);
-  --c-cyan-glow:   rgba(17, 192, 202, 0.35);
-  --c-amber:       #ffb000;
-  --c-amber-dim:   rgba(255, 176, 0, 0.15);
+  /* Accent — Deep Petrol (action) */
+  --c-cyan:        #005F6B;
+  --c-cyan-dim:    rgba(0, 95, 107, 0.08);
+  --c-cyan-glow:   rgba(0, 95, 107, 0.15);
 
-  --text:          #feeac8;
-  --text-muted:    rgba(254, 234, 200, 0.55);
-  --text-faint:    rgba(254, 234, 200, 0.28);
+  /* Accent — Flame Orange (highlight / tags) */
+  --c-amber:       #E25822;
+  --c-amber-dim:   rgba(226, 88, 34, 0.08);
 
-  --border:        rgba(17, 192, 202, 0.18);
-  --border-strong: rgba(17, 192, 202, 0.45);
+  /* Text */
+  --text:          #1A1A1A;   /* soft charcoal */
+  --text-muted:    #5A5347;   /* warm mid-grey */
+  --text-faint:    #8C8474;   /* drafting grey */
+
+  /* Borders — schematic-style, strictly flat */
+  --border:        #D1CDBF;
+  --border-strong: #A8A296;
 
   /* Type */
   --font-sans:     'Inter', 'Helvetica Neue', Arial, sans-serif;
@@ -75,15 +80,15 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 .c-amber { color: var(--c-amber); }
 .c-faint { color: var(--text-faint); }
 
-/* ---------- Film grain overlay ---------- */
+/* ---------- Grain — very subtle paper texture ---------- */
 .grain {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 999;
-  opacity: 0.035;
+  opacity: 0.025;
   background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px;
 }
@@ -109,6 +114,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   font-weight: 900;
   font-size: 1.25rem;
   letter-spacing: -0.06em;
+  color: var(--text);
   flex-shrink: 0;
   margin-right: 8px;
 }
@@ -119,7 +125,6 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   flex: 1;
 }
 
-/* Tab pills in top bar */
 .tabpill {
   display: flex;
   align-items: center;
@@ -138,6 +143,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 .tabpill:hover {
   color: var(--text);
   border-color: var(--border);
+  background: var(--bg-card);
 }
 .tabpill.active {
   color: var(--c-cyan);
@@ -180,7 +186,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
    LEFT PANEL
    ============================================================ */
 .panel-left {
-  background: var(--bg-base);
+  background: var(--bg-panel);
   border-right: 1px solid var(--border);
   padding: 36px 28px 28px;
   display: flex;
@@ -209,9 +215,10 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   font-size: 3.4rem;
   line-height: 0.9;
   letter-spacing: -0.05em;
+  color: var(--text);
 }
 
-/* Divider */
+/* Divider — schematic line */
 .divider {
   width: 100%;
   height: 1px;
@@ -232,7 +239,6 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   font-size: 0.84rem;
   color: var(--text-muted);
   line-height: 1.75;
-  margin-bottom: 0;
 }
 
 /* Meta list */
@@ -254,6 +260,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 }
 .meta-val {
   font-size: 0.82rem;
+  font-weight: 500;
   color: var(--text);
 }
 
@@ -273,6 +280,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   border-radius: var(--radius);
   font-size: 0.78rem;
   color: var(--text-muted);
+  background: var(--bg-base);
   transition: color var(--t-fast) var(--ease),
               border-color var(--t-fast) var(--ease),
               background var(--t-fast) var(--ease),
@@ -298,7 +306,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 }
 .social-ext {
   font-size: 0.6rem;
-  opacity: 0.45;
+  opacity: 0.4;
   flex-shrink: 0;
 }
 
@@ -315,7 +323,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
    RIGHT PANEL
    ============================================================ */
 .panel-right {
-  background: var(--bg-deep);
+  background: var(--bg-base);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -379,7 +387,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 }
 
 .proj-card {
-  background: var(--bg-panel);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 22px 20px 18px;
@@ -388,10 +396,10 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   gap: 12px;
   position: relative;
   overflow: hidden;
+  /* Strictly flat — no shadows per Ahoy's style */
   transition: border-color var(--t-mid) var(--ease),
               background var(--t-mid) var(--ease),
-              transform var(--t-mid) var(--ease),
-              box-shadow var(--t-mid) var(--ease);
+              transform var(--t-mid) var(--ease);
 }
 .proj-card::before {
   content: '';
@@ -404,9 +412,8 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 }
 .proj-card:hover {
   border-color: var(--border-strong);
-  background: var(--bg-card);
+  background: var(--bg-card-hover);
   transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.3);
 }
 .proj-card:hover::before { opacity: 1; }
 
@@ -425,6 +432,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   font-size: 1.6rem;
   letter-spacing: -0.02em;
   line-height: 1;
+  color: var(--text-faint);
 }
 
 .proj-head {
@@ -435,7 +443,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 }
 
 .proj-title {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 1rem;
   letter-spacing: -0.025em;
   line-height: 1.25;
@@ -458,6 +466,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   justify-content: center;
   font-size: 0.72rem;
   color: var(--text-muted);
+  background: var(--bg-base);
   transition: color var(--t-fast) var(--ease),
               border-color var(--t-fast) var(--ease),
               background var(--t-fast) var(--ease);
@@ -485,7 +494,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   font-family: var(--font-mono);
   font-size: 0.65rem;
   padding: 2px 8px;
-  border: 1px solid var(--c-amber-dim);
+  border: 1px solid rgba(226, 88, 34, 0.22);
   border-radius: var(--radius);
   color: var(--c-amber);
   background: var(--c-amber-dim);
@@ -524,6 +533,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   padding: 8px 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  background: var(--bg-panel);
   transition: color var(--t-fast) var(--ease),
               border-color var(--t-fast) var(--ease),
               background var(--t-fast) var(--ease);
@@ -593,7 +603,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   box-shadow: 0 0 0 3px var(--c-cyan-dim);
 }
 .form-group input.error,
-.form-group textarea.error { border-color: #ff5555; }
+.form-group textarea.error { border-color: #C0392B; }
 
 .btn-send {
   display: flex;
@@ -602,24 +612,20 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   gap: 9px;
   padding: 11px 20px;
   background: var(--c-cyan);
-  color: var(--bg-deep);
+  color: #F4F1EA;
   font-family: var(--font-display);
   font-size: 0.82rem;
   letter-spacing: 0.14em;
   border-radius: var(--radius);
   border: none;
   transition: background var(--t-fast) var(--ease),
-              transform var(--t-fast) var(--ease),
-              box-shadow var(--t-fast) var(--ease);
+              transform var(--t-fast) var(--ease);
 }
 .btn-send:hover {
-  background: #0de0eb;
+  background: #004d57;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px var(--c-cyan-glow);
 }
-.btn-send:active {
-  transform: translateY(0);
-}
+.btn-send:active { transform: translateY(0); }
 
 .form-note {
   font-size: 0.68rem;
@@ -629,14 +635,14 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 }
 .form-note a { color: var(--c-amber); }
 .form-note code {
-  background: var(--bg-input);
+  background: var(--bg-deep);
   padding: 1px 5px;
   border-radius: 2px;
   font-size: 0.65rem;
 }
 
 /* ============================================================
-   RESPONSIVE — tablet / mobile
+   RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {
   :root { --left-w: 260px; }
@@ -669,7 +675,6 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   }
 
   .projects-grid { grid-template-columns: 1fr; }
-
   .contact-layout { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
 
