@@ -1,36 +1,36 @@
 /* ============================================================
    rauldinho · Portfolio — style.css
-   Theme: Executive Clean — Tabler-inspired
-   Palette: Pure White · Navy · Executive Blue · Amber
+   Theme: Ahoy Balanced — White · Slate · Rust Orange
+   Blue as a subtle tint only; orange/rust as the primary accent
    ============================================================ */
 
 /* ---------- CSS Custom Properties ---------- */
 :root {
-  /* Backgrounds — Tabler-style crisp whites */
-  --bg-deep:       #f1f5f9;   /* cool page bg */
-  --bg-base:       #ffffff;   /* pure white — main content */
-  --bg-panel:      #ffffff;   /* white sidebar */
+  /* Backgrounds — white content, barely-blue tints for structure */
+  --bg-deep:       #EEF2F7;   /* very light blue-grey — page wrapper */
+  --bg-base:       #ffffff;   /* pure white — main content & topbar */
+  --bg-panel:      #F4F7FB;   /* faint blue-grey — sidebar */
   --bg-card:       #ffffff;   /* white cards */
-  --bg-card-hover: #f8fafc;   /* barely-there hover */
-  --bg-input:      #f8fafc;   /* input fields */
+  --bg-card-hover: #f8fafc;
+  --bg-input:      #F4F7FB;   /* inputs */
 
-  /* Primary accent — Executive Blue (Tabler signature) */
-  --c-cyan:        #206bc4;
-  --c-cyan-dim:    rgba(32, 107, 196, 0.08);
-  --c-cyan-glow:   rgba(32, 107, 196, 0.18);
+  /* Primary accent — warm rust/orange from the Ahoy icon */
+  --c-cyan:        #D4621C;
+  --c-cyan-dim:    rgba(212, 98, 28, 0.08);
+  --c-cyan-glow:   rgba(212, 98, 28, 0.20);
 
-  /* Secondary — Warm Amber (CTAs, tags) */
-  --c-amber:       #e8590c;
-  --c-amber-dim:   rgba(232, 89, 12, 0.08);
+  /* Secondary — deep rust */
+  --c-amber:       #A64020;
+  --c-amber-dim:   rgba(166, 64, 32, 0.08);
 
-  /* Text — navy-dark, authoritative */
-  --text:          #1d273b;   /* Tabler dark navy */
-  --text-muted:    #616876;   /* comfortable reading grey */
-  --text-faint:    #939caa;   /* placeholders, meta */
+  /* Text — dark, authoritative */
+  --text:          #1d273b;
+  --text-muted:    #616876;
+  --text-faint:    #939caa;
 
-  /* Borders — razor-thin, precise */
-  --border:        #e6e7e9;
-  --border-strong: #c8cdd2;
+  /* Borders — clean, precise */
+  --border:        #DDE3EC;
+  --border-strong: #B8C4D0;
 
   /* Type */
   --font-body:     'Inter', system-ui, sans-serif;
@@ -82,7 +82,7 @@ button { cursor: pointer; background: none; border: none; font-family: var(--fon
 .c-amber { color: var(--c-amber); }
 .c-faint { color: var(--text-faint); }
 
-/* ---------- Grain — off in executive mode ---------- */
+/* ---------- Grain — off on light theme ---------- */
 .grain { display: none; }
 
 /* ============================================================
@@ -389,7 +389,7 @@ button { cursor: pointer; background: none; border: none; font-family: var(--fon
 
 .proj-card {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: var(--radius);
   padding: 22px 20px 18px;
   display: flex;
@@ -397,7 +397,7 @@ button { cursor: pointer; background: none; border: none; font-family: var(--fon
   gap: 12px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   transition: border-color var(--t-mid) var(--ease),
               box-shadow var(--t-mid) var(--ease),
               transform var(--t-mid) var(--ease);
@@ -412,8 +412,8 @@ button { cursor: pointer; background: none; border: none; font-family: var(--fon
   transition: opacity var(--t-mid) var(--ease);
 }
 .proj-card:hover {
-  border-color: rgba(32, 107, 196, 0.3);
-  box-shadow: 0 4px 16px rgba(32, 107, 196, 0.12), 0 1px 4px rgba(0,0,0,0.06);
+  border-color: rgba(212, 98, 28, 0.35);
+  box-shadow: 0 4px 16px rgba(212, 98, 28, 0.10), 0 1px 4px rgba(0,0,0,0.06);
   transform: translateY(-2px);
 }
 .proj-card:hover::before { opacity: 1; }
@@ -447,7 +447,7 @@ button { cursor: pointer; background: none; border: none; font-family: var(--fon
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 1.05rem;
-  letter-spacing: -0.03em;   /* tight — Ahoy header rule */
+  letter-spacing: -0.03em;
   line-height: 1.2;
   color: var(--text);
 }
@@ -579,8 +579,8 @@ button { cursor: pointer; background: none; border: none; font-family: var(--fon
   justify-content: center;
   gap: 9px;
   padding: 11px 20px;
-  background: var(--c-amber);
-  color: #FBFAF5;
+  background: var(--c-cyan);
+  color: #ffffff;
   font-family: var(--font-label);  /* Bebas Neue — all-caps CTA */
   font-size: 1rem;
   letter-spacing: 0.14em;
@@ -591,7 +591,7 @@ button { cursor: pointer; background: none; border: none; font-family: var(--fon
               transform var(--t-fast) var(--ease);
 }
 .btn-send:hover {
-  background: #e85820;
+  background: #c96530;
   transform: translateY(-1px);
 }
 .btn-send:active { transform: translateY(0); }
