@@ -4,203 +4,121 @@
 
 'use strict';
 
-/* ---------- Navbar: scroll shadow + active link ---------- */
-(function initNavbar() {
-  const navbar = document.getElementById('navbar');
-  const navLinks = document.querySelectorAll('.nav-link');
-  const sections = document.querySelectorAll('section[id]');
-  const toggle = document.querySelector('.nav-toggle');
+/* ---------- Tab switching ---------- */
+(function initTabs() {
+  const pills = document.querySelectorAll('.tabpill[data-tab]');
+  const views = document.querySelectorAll('.tab-view');
 
-  // Scroll shadow
-  const onScroll = () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 10);
+  pills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      const target = pill.dataset.tab;
 
-    // Highlight active nav link based on scroll position
-    let current = '';
-    sections.forEach((sec) => {
-      const top = sec.offsetTop - 90;
-      if (window.scrollY >= top) current = sec.getAttribute('id');
-    });
-    navLinks.forEach((link) => {
-      const href = link.getAttribute('href').replace('#', '');
-      link.classList.toggle('active', href === current);
-    });
-  };
+      // Update pills
+      pills.forEach((p) => p.classList.toggle('active', p === pill));
 
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll(); // run once on load
-
-  // Mobile menu toggle
-  if (toggle) {
-    toggle.addEventListener('click', () => {
-      navbar.classList.toggle('menu-open');
-    });
-
-    // Close menu on link click
-    navLinks.forEach((link) => {
-      link.addEventListener('click', () => navbar.classList.remove('menu-open'));
-    });
-  }
-})();
-
-/* ---------- Scroll-reveal with IntersectionObserver ---------- */
-(function initReveal() {
-  const elements = document.querySelectorAll('.reveal');
-
-  if (!('IntersectionObserver' in window)) {
-    // Fallback: just show everything
-    elements.forEach((el) => el.classList.add('visible'));
-    return;
-  }
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+      // Swap views with re-trigger animation
+      views.forEach((view) => {
+        const isTarget = view.id === `tab-${target}`;
+        view.classList.remove('active');
+        if (isTarget) {
+          // Force reflow so animation re-triggers
+          void view.offsetWidth;
+          view.classList.add('active');
         }
       });
-    },
-    { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-  );
-
-  elements.forEach((el) => observer.observe(el));
+    });
+  });
 })();
 
-/* ---------- Dynamic footer year ---------- */
+/* ---------- Footer year ---------- */
 (function setYear() {
-  const yearEl = document.getElementById('year');
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  const el = document.getElementById('year');
+  if (el) el.textContent = new Date().getFullYear();
 })();
 
-/* ---------- Contact form: client-side validation + UX ---------- */
-(function initContactForm() {
+/* ---------- Contact form ---------- */
+(function initForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
 
   const fields = {
-    name:    { el: form.querySelector('#name'),    msg: 'Please enter your name.' },
-    email:   { el: form.querySelector('#email'),   msg: 'Please enter a valid email address.' },
-    message: { el: form.querySelector('#message'), msg: 'Please enter a message.' },
+    name:    { el: form.querySelector('#name'),    msg: 'Name is required.' },
+    email:   { el: form.querySelector('#email'),   msg: 'A valid email is required.' },
+    message: { el: form.querySelector('#message'), msg: 'Message cannot be empty.' },
   };
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  function clearError(field) {
-    field.el.classList.remove('error');
-    const existing = field.el.nextSibling;
-    if (existing && existing.classList && existing.classList.contains('field-error')) {
-      existing.remove();
-    }
+  function clearErr(f) {
+    f.el.classList.remove('error');
+    const tip = f.el.nextSibling;
+    if (tip?.classList?.contains('field-tip')) tip.remove();
   }
 
-  function showError(field) {
-    field.el.classList.add('error');
-    if (!field.el.nextSibling || !field.el.nextSibling.classList?.contains('field-error')) {
-      const err = document.createElement('p');
-      err.className = 'field-error';
-      err.style.cssText = 'color:#ef4444;font-size:0.75rem;margin-top:4px;';
-      err.textContent = field.msg;
-      field.el.after(err);
+  function showErr(f) {
+    f.el.classList.add('error');
+    if (!f.el.nextSibling?.classList?.contains('field-tip')) {
+      const t = document.createElement('p');
+      t.className = 'field-tip';
+      t.style.cssText = 'color:#ff5555;font-size:0.68rem;margin-top:3px;font-family:var(--font-mono);';
+      t.textContent = f.msg;
+      f.el.after(t);
     }
   }
 
   function validate() {
-    let valid = true;
-
-    Object.values(fields).forEach((f) => clearError(f));
-
-    if (!fields.name.el.value.trim()) {
-      showError(fields.name);
-      valid = false;
-    }
-    if (!emailRegex.test(fields.email.el.value.trim())) {
-      showError(fields.email);
-      valid = false;
-    }
-    if (!fields.message.el.value.trim()) {
-      showError(fields.message);
-      valid = false;
-    }
-
-    return valid;
+    let ok = true;
+    Object.values(fields).forEach((f) => clearErr(f));
+    if (!fields.name.el.value.trim())             { showErr(fields.name);    ok = false; }
+    if (!emailRe.test(fields.email.el.value))     { showErr(fields.email);   ok = false; }
+    if (!fields.message.el.value.trim())          { showErr(fields.message); ok = false; }
+    return ok;
   }
 
-  // Live clear errors on input
-  Object.values(fields).forEach((f) => {
-    f.el.addEventListener('input', () => clearError(f));
-  });
+  Object.values(fields).forEach((f) => f.el.addEventListener('input', () => clearErr(f)));
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
-    const submitBtn = form.querySelector('[type="submit"]');
-    const originalHTML = submitBtn.innerHTML;
+    const btn = form.querySelector('.btn-send');
+    const orig = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SENDING…';
 
-    // Loading state
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
+    const ENDPOINT = form.getAttribute('action') || '';
 
-    /* -------------------------------------------------------
-     * Formspree integration:
-     *   1. Go to https://formspree.io and create a free form.
-     *   2. Copy your endpoint (e.g. https://formspree.io/f/abcdefgh).
-     *   3. Set: form.setAttribute('action', 'YOUR_ENDPOINT');
-     *      OR change the FORMSPREE_ENDPOINT constant below.
-     * ------------------------------------------------------ */
-    const FORMSPREE_ENDPOINT = form.getAttribute('action') || '';
-
-    if (!FORMSPREE_ENDPOINT) {
-      // Dev mode: just simulate success after 1s
-      await new Promise((r) => setTimeout(r, 1000));
+    if (!ENDPOINT) {
+      // Dev mode: simulate success
+      await new Promise((r) => setTimeout(r, 900));
       showSuccess();
       return;
     }
 
     try {
-      const data = new FormData(form);
-      const res = await fetch(FORMSPREE_ENDPOINT, {
+      const res = await fetch(ENDPOINT, {
         method: 'POST',
-        body: data,
+        body: new FormData(form),
         headers: { Accept: 'application/json' },
       });
-
       if (res.ok) {
         showSuccess();
       } else {
-        throw new Error('Server error');
+        throw new Error();
       }
     } catch {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalHTML;
-      alert('Something went wrong. Please email me directly — the address is listed below.');
+      btn.disabled = false;
+      btn.innerHTML = orig;
+      alert('Something went wrong. Please reach out directly via the links on the left.');
     }
   });
 
   function showSuccess() {
-    // Replace form content with a success message
     form.innerHTML = `
-      <div class="form-success" style="display:flex;flex-direction:column;align-items:center;gap:14px;padding:40px 20px;text-align:center;">
-        <i class="fas fa-circle-check" style="font-size:3rem;color:#22c55e;"></i>
-        <strong style="font-size:1.15rem;color:var(--text);">Message sent!</strong>
-        <p style="color:var(--text-muted);font-size:0.9rem;">Thanks for reaching out. I'll get back to you as soon as possible.</p>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;padding:36px 20px;text-align:center;">
+        <i class="fas fa-circle-check" style="font-size:2.5rem;color:var(--c-cyan);"></i>
+        <strong style="font-family:var(--font-display);font-size:1.1rem;letter-spacing:0.1em;color:var(--text);">MESSAGE SENT</strong>
+        <p style="color:var(--text-muted);font-size:0.82rem;">Thanks for reaching out — I'll get back to you soon.</p>
       </div>
     `;
   }
-})();
-
-/* ---------- Smooth scroll for anchor links ---------- */
-(function initSmoothScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener('click', (e) => {
-      const target = document.querySelector(anchor.getAttribute('href'));
-      if (!target) return;
-      e.preventDefault();
-      const offset = 80; // navbar height buffer
-      const top = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    });
-  });
 })();
